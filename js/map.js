@@ -35,93 +35,107 @@ var getData = function(map) {
 }
 
 // Loop through your data and add the appropriate layers and points
-var customBuild = function( datas, map) {
+var customBuild = function( data, map) {
   // Be sure to add each layer to the map
-  
- //var  dataKilled = new L.LayerGroup([]);
  var  dataWhite = new L.LayerGroup([]);
  var  dataBlack = new L.LayerGroup([]);
  var  dataAsian = new L.LayerGroup([]);
  var  dataAmerican = new L.LayerGroup([]);
  var  dataHawaiian = new L.LayerGroup([]);
  var  dataUnknown = new L.LayerGroup([]);
-  datas.forEach(function ( data) {
-      //for (countTL=0; countTL < data.length; countTL++) {
-      if ( data["Race"] == "White"){  
-          var circle = new L.circleMarker([ data["lat"],  data["lng"]]);
+
+  var countTL = 0;
+  var countTR = 0;
+  var countBL = 0;
+  var countBR = 0; 
+  for (var i = 0; i < data.length; i++) {
+        var dat = data[i];
+        if (dat["Race"] == "White") {
+          if (dat["Victim's Gender"] == "Male") {
+            countTL++;
+          } else {
+            countTR++;
+          } 
+        } else {
+          if (dat["Victim's Gender"] == "Male") {
+            countBL++;
+          } else {
+            countBR++;
+          }
+        }
+      document.getElementById("top-left").innerHTML = countTL;
+      document.getElementById("top-right").innerHTML = countTR;
+      document.getElementById("bottom-left").innerHTML = countBL;
+      document.getElementById("bottom-right").innerHTML = countBR;
+
+      if (dat["Race"] == "White"){  
+          var circle = new L.circleMarker([ dat["lat"],  dat["lng"]]);
           circle.addTo( dataWhite);
-          var source = "link".link(data["Source Link"]);
-          circle.bindPopup( data["Summary"]+ " (" + source + ")");
-          if ( data["Hit or Killed?"] == "Killed") {
+          var source = "link".link(dat["Source Link"]);
+          circle.bindPopup( dat["Summary"]+ " (" + source + ")");
+          if (dat["Hit or Killed?"] == "Killed") {
             circle.setStyle({color: "red"});
           } else {
             circle.setStyle({color: "black"});
           }
-          var countTL = 0; 
-          for (countTL=0; countTL < data.length; countTL++) {
-            console.log("print1");
-            if (data["Race"] == "White") {
-            countTL = countTL + 1;
-            console.log("print");
-            }
-          }
-          $("#top-left").text(countTL);
-
-          //document.getElementById("count").innerHTML = countTL;
       }
-    //}
-      if ( data["Race"] == "Black or African American"){  
-          var circle = new L.circleMarker([ data["lat"],  data["lng"]]);
+      if ( dat["Race"] == "Black or African American"){  
+          var circle = new L.circleMarker([ dat["lat"],  dat["lng"]]);
           circle.addTo( dataBlack);
-          circle.bindPopup( data["Summary"]);
-          if ( data["Hit or Killed?"] == "Killed") {
+          var source = "link".link(dat["Source Link"]);
+          circle.bindPopup( dat["Summary"]+ " (" + source + ")");
+          if ( dat["Hit or Killed?"] == "Killed") {
             circle.setStyle({color: "red"});
           } else {
             circle.setStyle({color: "black"});
           }
       }
-      if ( data["Race"] == "Asian"){  
-          var circle = new L.circleMarker([ data["lat"],  data["lng"]]);
+      if ( dat["Race"] == "Asian"){  
+          var circle = new L.circleMarker([ dat["lat"],  dat["lng"]]);
           circle.addTo( dataAsian);
-          circle.bindPopup( data["Summary"]);
-          if ( data["Hit or Killed?"] == "Killed") {
+          var source = "link".link(dat["Source Link"]);
+          circle.bindPopup( dat["Summary"]+ " (" + source + ")");
+          if ( dat["Hit or Killed?"] == "Killed") {
             circle.setStyle({color: "red"});
           } else {
             circle.setStyle({color: "black"});
           }
       }
-      if ( data["Race"] == "American Indian or Alaska Native"){  
-          var circle = new L.circleMarker([ data["lat"],  data["lng"]]);
+      if ( dat["Race"] == "American Indian or Alaska Native"){  
+          var circle = new L.circleMarker([ dat["lat"],  dat["lng"]]);
           circle.addTo( dataAmerican);
-          circle.bindPopup( data["Summary"]);
-          if ( data["Hit or Killed?"] == "Killed") {
+          var source = "link".link(dat["Source Link"]);
+          circle.bindPopup( dat["Summary"]+ " (" + source + ")");
+          if ( dat["Hit or Killed?"] == "Killed") {
             circle.setStyle({color: "red"});
           } else {
             circle.setStyle({color: "black"});
           }
       }
-      if ( data["Race"] == "Native Hawaiian or Other Pacific Islander"){  
-          var circle = new L.circleMarker([ data["lat"],  data["lng"]]);
+      if ( dat["Race"] == "Native Hawaiian or Other Pacific Islander"){  
+          var circle = new L.circleMarker([ dat["lat"],  dat["lng"]]);
           circle.addTo( dataHawaiian);
-          circle.bindPopup( data["Summary"]);
-          if ( data["Hit or Killed?"] == "Killed") {
+          var source = "link".link(dat["Source Link"]);
+          circle.bindPopup( dat["Summary"]+ " (" + source + ")");
+          if ( dat["Hit or Killed?"] == "Killed") {
             circle.setStyle({color: "red"});
           } else {
             circle.setStyle({color: "black"});
           }
       }
-      else if ( data["Race"] == "Unknown"){  
-          var circle = new L.circleMarker([ data["lat"],  data["lng"]]);
+      else if ( dat["Race"] == "Unknown"){  
+          var circle = new L.circleMarker([ dat["lat"],  dat["lng"]]);
           circle.addTo( dataUnknown);
-          circle.bindPopup( data["Summary"]);
-          if ( data["Hit or Killed?"] == "Killed") {
+          var source = "link".link(dat["Source Link"]);
+          circle.bindPopup( dat["Summary"]+ " (" + source + ")");
+          if ( dat["Hit or Killed?"] == "Killed") {
             circle.setStyle({color: "red"});
           } else {
             circle.setStyle({color: "black"});
           }
       }
+}
 
- });
  var layerGroup = {
      "White":  dataWhite,
      "Black or African American": dataBlack,
@@ -131,13 +145,8 @@ var customBuild = function( datas, map) {
      "Unknown":  dataUnknown,
  }
 
- //var layerGroup = L.layerGroup().addTo(map);
-
     L.control.layers(null, layerGroup).addTo(map);
 }
 
-map.on('click', 'selector', function() {
-
-});
 
 
